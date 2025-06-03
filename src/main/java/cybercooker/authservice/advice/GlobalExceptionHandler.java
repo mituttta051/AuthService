@@ -38,14 +38,14 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new NotValidRequestException(new NotValidRequestDetails(errors)));
     }
-    
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<NotValidRequestException> handleIllegalArgumentExceptions(IllegalArgumentException ex) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new NotValidRequestException(new NotValidRequestDetails(errors)));
     }
-    
+
 
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
         Map<String, String> error = Map.of("error", "No handler found for " + ex.getHttpMethod() + " " + ex.getRequestURL());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
-    
+
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

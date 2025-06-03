@@ -1,18 +1,19 @@
 package cybercooker.authservice.service;
 
+import cybercooker.authservice.dto.UserDTO;
 import cybercooker.authservice.entity.User;
 
 import java.util.UUID;
 
 public interface UserService {
 
-    User getUserById(UUID userId);
+    UserDTO getUserById(UUID userId);
 
-    User getUserByUsername(String username);
+    UserDTO getUserByUsername(String username);
 
-    User createUser(User user);
+    UserDTO createUser(User user);
 
-    User updateUser(UUID userId, User user);
+    UserDTO updateUser(UUID userId, User user);
 
     void deleteUserById(UUID userId);
 }

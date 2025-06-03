@@ -1,5 +1,6 @@
 package cybercooker.authservice.mapper;
 
+import cybercooker.authservice.dto.UserDTO;
 import cybercooker.authservice.entity.User;
 import cybercooker.authservice.request.UserCreateRequest;
 import cybercooker.authservice.request.UserUpdateRequest;
@@ -13,5 +14,7 @@ public interface UserMapper {
     User toUser(UserCreateRequest user);
 
     User toUser(UserUpdateRequest user);
+
+    UserDTO toUserDTO(User user);
 
 }

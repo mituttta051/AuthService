@@ -1,8 +1,6 @@
 package cybercooker.authservice.controller;
 
-import cybercooker.authservice.entity.User;
-import cybercooker.authservice.exception.NotValidRequestException;
-import cybercooker.authservice.exception.details.NotValidRequestDetails;
+import cybercooker.authservice.dto.UserDTO;
 import cybercooker.authservice.mapper.UserMapper;
 import cybercooker.authservice.request.UserCreateRequest;
 import cybercooker.authservice.request.UserUpdateRequest;
@@ -11,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 @RestController
@@ -21,27 +18,27 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable String userId) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable String userId) {
         UUID uuid = UUID.fromString(userId);
-        User user = userService.getUserById(uuid);
+        UserDTO user = userService.getUserById(uuid);
         return ResponseEntity.ok(user);
     }
 
     @GetMapping("/username/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        User user = userService.getUserByUsername(username);
+    public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
+        UserDTO user = userService.getUserByUsername(username);
         return ResponseEntity.ok(user);
     }
 
     @PostMapping()
-    public ResponseEntity<User> createUser(@RequestBody UserCreateRequest user) {
-        User createdUser = userService.createUser(UserMapper.INSTANCE.toUser(user));
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserCreateRequest user) {
+        UserDTO createdUser = userService.createUser(UserMapper.INSTANCE.toUser(user));
         return ResponseEntity.status(201).body(createdUser);
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable UUID userId, @RequestBody UserUpdateRequest user) {
-        User updatedUser = userService.updateUser(userId, UserMapper.INSTANCE.toUser(user));
+    public ResponseEntity<UserDTO> updateUser(@PathVariable UUID userId, @RequestBody UserUpdateRequest user) {
+        UserDTO updatedUser = userService.updateUser(userId, UserMapper.INSTANCE.toUser(user));
         return ResponseEntity.ok(updatedUser);
     }
 
