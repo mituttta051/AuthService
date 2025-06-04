@@ -25,11 +25,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public NotValidRequestException handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
-        if (ex.getRequiredType() != null && ex.getRequiredType().equals(java.util.UUID.class)) {
-            return new NotValidRequestException(new NotValidRequestDetails(Map.of("uuid", "Invalid UUID format: " + ex.getValue())));
-        }
-        return new NotValidRequestException(new NotValidRequestDetails(Map.of("parameter", "Invalid parameter: " + ex.getValue())));
+    public ResponseEntity<NotValidRequestException> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new NotValidRequestException(new NotValidRequestDetails(Map.of("parameter", "Invalid " + ex.getRequiredType().getSimpleName() + " format: " + ex.getValue()))));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
