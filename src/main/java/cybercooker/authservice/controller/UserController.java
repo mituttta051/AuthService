@@ -1,6 +1,7 @@
 package cybercooker.authservice.controller;
 
 import cybercooker.authservice.dto.UserDTO;
+import cybercooker.authservice.entity.User;
 import cybercooker.authservice.mapper.UserMapper;
 import cybercooker.authservice.request.UserCreateRequest;
 import cybercooker.authservice.request.UserUpdateRequest;
@@ -36,8 +37,10 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable UUID userId, @RequestBody UserUpdateRequest user) {
-        UserDTO updatedUser = userService.updateUser(userId, UserMapper.INSTANCE.toUser(user));
+    public ResponseEntity<UserDTO> updateUser(@PathVariable UUID userId, @RequestBody UserUpdateRequest userUpdateRequest) {
+        User user = UserMapper.INSTANCE.toUser(userUpdateRequest);
+        user.setId(userId);
+        UserDTO updatedUser = userService.updateUser(user);
         return ResponseEntity.ok(updatedUser);
     }
 
