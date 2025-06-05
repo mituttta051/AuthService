@@ -1,0 +1,52 @@
+package cybercooker.authservice.controller;
+
+import cybercooker.authservice.dto.UserDTO;
+import cybercooker.authservice.entity.User;
+import cybercooker.authservice.mapper.UserMapper;
+import cybercooker.authservice.request.UserCreateRequest;
+import cybercooker.authservice.request.UserUpdateRequest;
+import cybercooker.authservice.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/user")
+public class UserController {
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable UUID userId) {
+        UserDTO user = userService.getUserById(userId);   
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
+        UserDTO user = userService.getUserByUsername(username);
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping()
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserCreateRequest user) {
+        UserDTO createdUser = userService.createUser(UserMapper.INSTANCE.toUser(user));
+        return ResponseEntity.status(201).body(createdUser);
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable UUID userId, @RequestBody UserUpdateRequest userUpdateRequest) {
+        User user = UserMapper.INSTANCE.toUser(userUpdateRequest);
+        user.setId(userId);
+        UserDTO updatedUser = userService.updateUser(user);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUserById(@PathVariable UUID userId) {
+        userService.deleteUserById(userId);
+        return ResponseEntity.noContent().build();
+    }
+}
